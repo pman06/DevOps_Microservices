@@ -1,1 +1,10 @@
 <paste log output from Kubernetes-mediated prediction, here>
+
+pod/predictor created
+All pods: \n
+NAME        READY   STATUS              RESTARTS   AGE
+predictor   0/1     ContainerCreating   0          0s
+pod/predictor condition met
+Forwarding from 0.0.0.0:8000 -> 80
+Handling connection for 8000
+Handling connection for 8000
