@@ -43,70 +43,65 @@ source .devops/bin/activate
 
 * Setup and Configure Docker locally: 
 
-`To install Docker on your machine, go to https://docs.docker.com/engine/install/``
+  - To install Docker on your machine, go to [Docker ](https://docs.docker.com/engine/install/ "docker")
 
 * Setup and Configure Kubernetes locally:
 
-`To onstall Kubernetes on linux: `
+  - To onstall Kubernetes on linux:
 
-```bash
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-```
+  ```bash
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+  ```
 
-`or go to https://kubernetes.io/docs/tasks/tools/ for other OS`
+    or go [here](https://kubernetes.io/docs/tasks/tools/) for other OS
 
-`Verify the installation with:`
-kubectl version --client
-
-* Create Flask app in Container: 
-
-`docker build --tag=yourdockerhubusername/imagename:tag`
-
-`docker run -p 8000:80 imagename'
+  ```bash
+    #Verify the installation with:`
+    kubectl version --client
+    #Create Flask app in Container: 
+    docker build --tag=yourdockerhubusername/imagename:tag`
+    docker run -p 8000:80 imagename
+  ```
 
 
 * Run via kubectl: 
 
-`To xecute via Kubectl`
 
-`kubectl run preferedname --image=yourdockerhubusername/imagename:tag --port=80`
+  ```bash
+    #To xecute via Kubectl
+    kubectl run preferedname --image=yourdockerhubusername/imagename:tag --port=80
+    #Verify kubernetes pods started
+    kubectl get pods
+    #Forward the container port to a host
+    kubectl port-forward pods/preferedname --address 0.0.0.0 8000:80
+    #Verify port is forwarded by opening another terminal and execute
+    curl localhost:8000
+    #or
+    run "make_prediction.sh"
+  ```
 
-`Verify kubernetes pods started`
-
-`kubectl get pods`
-
-`Forward the container port to a host`
-
-`kubectl port-forward pods/preferedname --address 0.0.0.0 8000:80`
-
-`Verify port is forwarded by opening another terminal and execute`
-
-`curl localhost:8000`
-
-`or`
-
-`run "make_prediction.sh"`
-
+--- 
 
 ### Files In the Project
 
-.circleci/config.yml: Contains CircleCI workflow configurations for testing and building our code. Can be extended to be deployed to a web server.
 
-output_txt_files: Files containing outputs from the projuct run. Docker_out.txt contains docker run outputs and kubernetes_out.txt contains out from kubernetes
+`.circleci/config.yml`: Contains CircleCI workflow configurations for testing and building our code. Can be extended to be deployed to a web server.
 
-app.py: fask file that accepts json data, formatand scale the json input, and make predictions based on input.
+`output_txt_files`: Files containing outputs from the projuct run. Docker_out.txt contains docker run outputs and kubernetes_out.txt contains out from kubernetes
 
-Dockerfile: Our docker image setup file
+`app.py`: fask file that accepts json data, formatand scale the json input, and make predictions based on input.
 
-make_prediction.sh: when executed, calls our running instance with json data needed to make predictions, and outputs the receuved prediction response.
+`Dockerfile`: Our docker image setup file
 
-Makefile: The Makefile includes instructions on environment setup and lint tests. Create and activate a virtual environment. Install dependencies in requirements.txt
+`make_prediction.sh`: when executed, calls our running instance with json data needed to make predictions, and outputs the receuved prediction response.
 
-requirements.txt: List of libraries needede for our app to run
+`Makefile`: The Makefile includes instructions on environment setup and lint tests. Create and activate a virtual environment. Install dependencies in requirements.txt
 
-run_docker.sh: Build image and add a descriptive tag, and Run flask app
+`requirements.txt`: List of libraries needede for our app to run
 
-run_kubernetes.sh: Run the Docker Hub container with kubernetes and Forward the container port to a host
+`run_docker.sh`: Build image and add a descriptive tag, and Run flask app
 
-upload_docker.sh: The file tags and uploads an image to Docker Hub
+`run_kubernetes.sh`: Run the Docker Hub container with kubernetes and Forward the container port to a host
+
+`upload_docker.sh`: The file tags and uploads an image to Docker Hub
