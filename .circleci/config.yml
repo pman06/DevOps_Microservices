@@ -100,7 +100,7 @@ jobs:
           name: Configure instance and install Docker
           command: |
             cd .circleci/ansible
-            ansible-playbook -i inventory.txt 
+            ansible-playbook -i inventory.txt configure-server.yml
 
 workflows:
   build-and-test:
