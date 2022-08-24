@@ -31,7 +31,7 @@ Resources:
       ImageId: ami-052efd3df9dad4825 
       InstanceType: !Sub ${InstanceType}
       SecurityGroupIds:
-        - !GetAtt InstanceSecurityGroup.GroupId
+        - !Ref InstanceSecurityGroup
       Tags:
         - Key: Name
           Value: !Sub ${ID}-Microservice
