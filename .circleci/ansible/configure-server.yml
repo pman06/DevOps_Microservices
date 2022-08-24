@@ -1,0 +1,8 @@
+---
+- name: "Server configuration play"
+  hosts: web
+  user: ubuntu
+  gather_facts: false
+
+  roles:
+    - configure-server

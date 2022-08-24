@@ -1,0 +1,37 @@
+Parameters:
+  ID:
+    Description: Unique Identifier
+    Type: String
+    Default: Microservice
+
+  InstanceType:
+    Description: Image ID to use for deployment
+    Type: String
+    Default: t2.micro
+
+Resources:
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${ID}-Microservice
+      GroupDescription:  Allow port 22
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub ${ID}-Microservice
+  
+  TestInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      KeyName: eks
+      ImageId: ami-052efd3df9dad4825 
+      InstanceType: !Sub ${InstanceType}
+      SecurityGroupIds:
+        - !Ref InstanceSecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${ID}-Microservice

@@ -1,20 +1,23 @@
 # Python CircleCI 2.0 configuration file
 #
 # Check https://circleci.com/docs/2.0/language-python/ for more details
-#
-version: 2
+version: 2.1
+
+executors:
+  python-node:
+    docker:
+      - image: python:3.7.3-stretch
+    
+  aws-cli:
+    docker:
+      - image: amazon/aws-cli
+
 jobs:
   build:
-    docker:
-      # Use the same Docker base as the project
-      - image: python:3.7.3-stretch
-
+    executor: python-node   
     working_directory: ~/repo
-
     steps:
       - checkout
-
-      # Download and cache dependencies
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "requirements.txt" }}
@@ -34,10 +37,65 @@ jobs:
           paths: 
             - ./venv
           key: v1-dependencies-{{ checksum "requirements.txt" }}
-
       # run lint!
       - run:
           name: run lint
           command: |
             . venv/bin/activate
               make lint 
+      # run test
+      - run:
+          name: run test
+          command: |
+            . venv/bin/activate
+            make test
+
+  #Deploy infrastructure to test Image on AWS
+  deploy- infrastructure:
+    executor: aws-cli
+    steps:
+      - checkout
+      - run: 
+          name: Provision Nodes to test Docker container
+          command: | 
+            aws cloudformation deploy --template-file .circleci/files/deploy-ec2.yaml \
+            --tags project=ML-Microservice --stack-name "ML-Microservice-Project" \
+            --parameter-overrides ID="ML-${CIRCLE_WORKFLOW_ID:0:7}" \
+            InstanceType="t2.micro"
+      - run:
+          name: Save Node IP
+          command: |
+            aws ec2 describe-instances \
+            --query "Reservations[*].Instances[*].PublicIpAddress" \
+            --filter "Name=tag-value,Values=ML-${CIRCLE_WORKFLOW_ID:0:7}-Microservice" \
+            --output text >> .circleci/ansible/inventory.txt
+            cat .circleci/ansible/inventory.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - project/.circleci/ansible/inventory.txt
+
+  configure-infrastructure:
+    executor: python-node
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "90:6d:26:97:50:03:da:15:e3:1f:c4:0c:46:3a:b7:18"
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install dependencies
+          command: apt install --update ansible tar gzip
+      - run:
+          name: Configure instance and install Docker
+          command: |
+            cd .circleci/ansible
+            ansible-playbook -i inventory.txt 
+
+workflows:
+  build-and-test:
+    jobs:
+      - build
+
+    
