@@ -64,7 +64,7 @@ jobs:
       - checkout
       - run: 
           name: Provision Nodes to test Docker container
-          command: | 
+          command: |
             env
             aws cloudformation deploy --template-file .circleci/files/deploy-ec2.yaml \
             --tags project=ML-Microservice --stack-name "ML-Microservice-Project" \
