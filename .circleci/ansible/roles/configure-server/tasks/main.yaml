@@ -1,0 +1,22 @@
+---
+- name: "Add docker gpg Key"
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: "Add Docker registery"
+  apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu focal stable
+    state: present
+
+- name: "Update apt and install Docker"
+  apt: 
+    name: [docker-ce, docker-ce-cli, containerd.io]
+    state: latest
+    update_cache: yes
+
+- name: "Start Docker service"
+  systemd: 
+    name: docker
+    enabled: yes
+    state: restarted 
