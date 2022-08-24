@@ -12,6 +12,13 @@ executors:
     docker:
       - image: amazon/aws-cli
 
+# commands:
+#   destroy-on-fail:
+#     description: "Destroy created infrastructure if job fails"
+#     steps:
+#       - run: 
+#           name: Destroy infrastructure on fail
+
 jobs:
   build:
     executor: python-node   
@@ -43,7 +50,7 @@ jobs:
           command: |
             . venv/bin/activate
               make lint 
-      # run test
+      # run test if test files are available
       - run:
           name: run test
           command: |
@@ -97,5 +104,8 @@ workflows:
   build-and-test:
     jobs:
       - build
+      - deploy- infrastructure:
+          requires:
+            - "build"
 
     
