@@ -71,7 +71,7 @@ jobs:
             InstanceType="t2.micro"
       - run:
           name: Save Node IP
-          command: |
+          command: | 
             aws ec2 describe-instances \
             --query "Reservations[*].Instances[*].PublicIpAddress" \
             --filter "Name=tag-value,Values=ML-${CIRCLE_WORKFLOW_ID:0:7}-Microservice" \
