@@ -58,7 +58,7 @@ jobs:
             # make test
 
   #Deploy infrastructure to test Image on AWS
-  deploy- infrastructure:
+  deploy-infrastructure:
     executor: aws-cli
     steps:
       - checkout
@@ -106,8 +106,11 @@ workflows:
   build-and-test:
     jobs:
       - build
-      - deploy- infrastructure:
+      - deploy-infrastructure:
           requires:
             - "build"
+      - configure-infrastructure:
+          requires:
+            - "deploy-infrastructure"
 
     
