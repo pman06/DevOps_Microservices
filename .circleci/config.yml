@@ -62,6 +62,7 @@ jobs:
     executor: aws-cli
     steps:
       - checkout
+      - run:  yum install -y tar gzip
       - run: 
           name: Provision Nodes to test Docker container
           command: |
