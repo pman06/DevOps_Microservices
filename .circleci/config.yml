@@ -95,7 +95,7 @@ jobs:
           at: ~/
       - run:
           name: Install dependencies
-          command: apt update && apt install ansible tar gzip
+          command: apt update -y && apt install -y ansible tar gzip
       - run:
           name: Configure instance and install Docker
           command: |
