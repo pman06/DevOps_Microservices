@@ -36,7 +36,7 @@ resource "aws_instance" "TestInstance" {
     "Name" = "${var.ID}-Microservice"
   }
   provisioner "local-exec" {
-    command = "echo ${self.public_ip} >> ~/.circleci/ansible/inventory.txt"
+    command = "echo ${self.public_ip} >> ~/project/.circleci/ansible/inventory.txt"
   }
 }
 
