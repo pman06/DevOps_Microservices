@@ -74,6 +74,7 @@ jobs:
       - run:  apk add --update tar gzip
       - run: pwd
       - terraform/init:
+          working_directory: ~/project/.circleci/files
           path: .
       - terraform/validate:
           path: .
