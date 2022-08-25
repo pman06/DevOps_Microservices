@@ -67,24 +67,17 @@ jobs:
 
   #Deploy infrastructure to test Image on AWS
   deploy-infrastructure:
-    executor: terraform/default
+    executor: terraform-cli
     working_directory: ~/project/.circleci/files
     steps:
       - checkout
       - run:  apk add --update tar gzip
-      - terraform/init:
-          path: ~/project/.circleci/files
-      - terraform/validate:
-          path: .
-      - terraform/fmt:
-          path: .
-      - terraform/plan:
-          var: "ID=ML"
-          path: .
-      - terraform/apply:
-          var: "ID=ML"
-          path: .
-            
+      - run:
+          name: Terraform init
+          command: terraform init
+      - run:
+          name: Terraform plan
+          command: terraform plan -var="ID=ML"
             # To deploy using cloud formation
             # env
             # aws cloudformation deploy --template-file .circleci/files/deploy-ec2.yaml \
