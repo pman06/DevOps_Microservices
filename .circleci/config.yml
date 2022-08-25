@@ -93,7 +93,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
-            - /project/.circleci/ansible/inventory.txt
+            - project/.circleci/ansible/inventory.txt
 
   configure-infrastructure:
     executor: python-node
