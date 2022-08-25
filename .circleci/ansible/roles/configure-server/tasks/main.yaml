@@ -8,7 +8,7 @@
 - name: "Add Docker registery"
   become: true
   apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu  jammy stable
+    repo: deb https://download.docker.com/linux/ubuntu  $(lsb_release -cs) stable
     state: present
 
 - name: "Update apt and install Docker"
