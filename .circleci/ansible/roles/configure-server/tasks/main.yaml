@@ -1,29 +1,28 @@
 ---
 - name: "Add docker gpg Key"
   become: true
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
+  # apt_key:
+  #   url: https://download.docker.com/linux/ubuntu/gpg
+  #   state: present
+  command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 - name: "Add Docker registery"
   become: true
-  apt_repository:
-    repo: deb https://download.docker.com/linux/ubuntu jammy stable
-    state: present
+  # apt_repository:
+  #   repo: deb https://download.docker.com/linux/ubuntu jammy stable
+  #   state: present
+  command: echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
 
 - name: Update apt and install docker-ce
   become: true
-  apt:
-    name: docker-ce
-    state: latest
-    update_cache: true
+  
 
-- name: "Update apt and install Docker"
+- name: "install Docker dependencies"
   become: true
   apt: 
-    name: [docker-ce, docker-ce-cli, containerd.io]
+    name: [docker-ce-cli, containerd.io]
     state: latest
-    update_cache: yes
 
 - name: "Start Docker service"
   become: true
