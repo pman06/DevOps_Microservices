@@ -17,6 +17,7 @@
   become: true
   apt:
     name: docker-ce
+    update_cache: true
 
 - name: "install Docker dependencies"
   become: true
