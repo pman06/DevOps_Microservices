@@ -29,7 +29,7 @@ resource "aws_security_group" "my_sec_group" {
 resource "aws_instance" "TestInstance" {
   ami                         = "ami-052efd3df9dad4825"
   instance_type               = "t2.micro"
-  security_groups             = [aws_security_group.my_sec_group.name]
+  vpc_security_group_ids      = [aws_default_security_group.my_sec_group.id]
   associate_public_ip_address = true
   key_name                    = "eks"
   tags = {
