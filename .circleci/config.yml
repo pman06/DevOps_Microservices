@@ -72,7 +72,8 @@ jobs:
           command: |
             cd .circleci/files
             terraform init
-            terraform apply -var="ID=ML"
+            terraform plan -var="ID=ML"
+            terraform apply -var="ID=ML" --auto-approve
             # To deploy using cloud formation
             # env
             # aws cloudformation deploy --template-file .circleci/files/deploy-ec2.yaml \
