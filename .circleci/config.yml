@@ -72,6 +72,7 @@ jobs:
     steps:
       - checkout
       - run:  apk add --update tar gzip
+      - run: pwd
       - terraform/init:
           path: .
       - terraform/validate:
@@ -81,6 +82,7 @@ jobs:
       - terraform/plan:
           path: .
       - terraform/apply:
+          var: "ID=ML"
           path: .
             
             # To deploy using cloud formation
