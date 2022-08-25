@@ -16,7 +16,8 @@
 
 - name: Update apt and install docker-ce
   become: true
-  
+  apt:
+    name: docker-ce
 
 - name: "install Docker dependencies"
   become: true

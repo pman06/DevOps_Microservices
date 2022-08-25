@@ -12,6 +12,10 @@ executors:
     docker:
       - image: amazon/aws-cli
 
+  terraform-cli:
+    docker:
+      - image: hashicorp/terraform:light
+
 # commands:
 #   destroy-on-fail:
 #     description: "Destroy created infrastructure if job fails"
@@ -59,26 +63,22 @@ jobs:
 
   #Deploy infrastructure to test Image on AWS
   deploy-infrastructure:
-    executor: aws-cli
+    executor: terraform
     steps:
       - checkout
-      - run:  yum install -y tar gzip
+      - run:  apt install -y tar gzip
       - run: 
-          name: Provision Nodes to test Docker container
+          name: Provision and save node ip to test Docker container
           command: |
-            env
-            aws cloudformation deploy --template-file .circleci/files/deploy-ec2.yaml \
-            --tags project=ML-Microservice --stack-name "ML-Microservice-Project" \
-            --parameter-overrides ID="ML-${CIRCLE_WORKFLOW_ID:0:7}" \
-            InstanceType="t2.micro"
-      - run:
-          name: Save Node IP
-          command: | 
-            aws ec2 describe-instances \
-            --query "Reservations[*].Instances[*].PublicIpAddress" \
-            --filter "Name=tag-value,Values=ML-${CIRCLE_WORKFLOW_ID:0:7}-Microservice" \
-            --output text >> .circleci/ansible/inventory.txt
-            cat .circleci/ansible/inventory.txt
+            cd .circleci/files
+            terraform init
+            terraform apply -var="ID=ML"
+            # To deploy using cloud formation
+            # env
+            # aws cloudformation deploy --template-file .circleci/files/deploy-ec2.yaml \
+            # --tags project=ML-Microservice --stack-name "ML-Microservice-Project" \
+            # --parameter-overrides ID="ML-${CIRCLE_WORKFLOW_ID:0:7}" \
+            # InstanceType="t2.micro"
       - persist_to_workspace:
           root: ~/
           paths:
@@ -101,7 +101,7 @@ jobs:
           command: |
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
-            
+
 workflows:
   build-and-test:
     jobs:
