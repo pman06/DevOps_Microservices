@@ -74,7 +74,7 @@ jobs:
       - terraform/init:
           path: .circleci/files
       - terraform/plan:
-          var: "TF_VAR_AWS_ACCESS_KEY_ID=$TF_VAR_AWS_ACCESS_KEY_ID, TF_VAR_AWS_SECRET_ACCESS_KEY=$TF_VAR_AWS_SECRET_ACCESS_KEY"         
+          var: "ID=ML,TF_VAR_AWS_ACCESS_KEY_ID=$TF_VAR_AWS_ACCESS_KEY_ID, TF_VAR_AWS_SECRET_ACCESS_KEY=$TF_VAR_AWS_SECRET_ACCESS_KEY"         
           path: .circleci/files
       # - run:
       #     name: Terraform init
