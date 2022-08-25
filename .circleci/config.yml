@@ -3,6 +3,9 @@
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 version: 2.1
 
+orbs: 
+  terraform: circleci/terraform@3.1.0
+
 executors:
   python-node:
     docker:
@@ -15,9 +18,6 @@ executors:
   terraform-cli:
     docker:
       - image: hashicorp/terraform:light
-    environment:
-      TF_VAR_AWS_ACCESS_KEY_ID: $TF_VAR_AWS_ACCESS_KEY_ID
-      TF_VAR_AWS_SECRET_ACCESS_KEY: $TF_VAR_AWS_SECRET_ACCESS_KEY
 
 
 # commands:
@@ -67,18 +67,22 @@ jobs:
 
   #Deploy infrastructure to test Image on AWS
   deploy-infrastructure:
-    executor: terraform-cli
+    working_directory: ~/project/.circleci/files
+    executor: terraform/default
     steps:
       - checkout
       - run:  apk add --update tar gzip
-      - run: 
-          name: Provision and save node ip to test Docker container
-          command: |
-            cd .circleci/files 
-            env
-            terraform init
-            terraform plan -var="ID=ML"
-            terraform apply -var="ID=ML" --auto-approve
+      - terraform/init:
+          path: .
+      - terraform/validate:
+          path: .
+      - terraform/fmt:
+          path: .
+      - terraform/plan:
+          path: .
+      - terraform/apply:
+          path: .
+            
             # To deploy using cloud formation
             # env
             # aws cloudformation deploy --template-file .circleci/files/deploy-ec2.yaml \
