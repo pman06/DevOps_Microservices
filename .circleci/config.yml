@@ -68,16 +68,25 @@ jobs:
   #Deploy infrastructure to test Image on AWS
   deploy-infrastructure:
     executor: terraform-cli
-    working_directory: ~/project/.circleci/files
     steps:
       - checkout
       - run:  apk add --update tar gzip
-      - run:
-          name: Terraform init
-          command: terraform init
-      - run:
-          name: Terraform plan
-          command: terraform plan -var="ID=ML"
+      - terraform/init:
+          # checkout: true
+          path: .circleci/files
+          var: "TF_VAR_AWS_ACCESS_KEY_ID=$TF_VAR_AWS_ACCESS_KEY_ID, TF_VAR_AWS_SECRET_ACCESS_KEY=$TF_VAR_AWS_SECRET_ACCESS_KEY" 
+      - terraform/plan:
+          path: .
+      # - run:
+      #     name: Terraform init
+      #     command: |
+      #       cd .circleci/files
+      #       terraform init
+      # - run:
+      #     name: Terraform plan
+      #     command: 
+      #       cd .circleci/files
+      #       terraform plan -var="ID=ML"
             # To deploy using cloud formation
             # env
             # aws cloudformation deploy --template-file .circleci/files/deploy-ec2.yaml \
