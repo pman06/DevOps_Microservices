@@ -117,6 +117,9 @@ jobs:
           name: Install dependencies
           command: apt update -y && apt install -y ansible tar gzip
       - run:
+          name: wait 60 secs
+          command: sleep 60
+      - run:
           name: Configure instance and install Docker
           command: |
             cd .circleci/ansible
