@@ -70,6 +70,11 @@ jobs:
     executor: terraform-cli
     steps:
       - checkout
+      - restore_cache:
+          keys:
+            - terra-dependencies-{{ checksum ".circleci/files" }}
+            # fallback to using the latest cache if no exact match is found
+            - terra-dependencies-
       - run:  apk add --update tar gzip
       - run: pwd
       - terraform/init:
@@ -90,6 +95,10 @@ jobs:
             # --tags project=ML-Microservice --stack-name "ML-Microservice-Project" \
             # --parameter-overrides ID="ML-${CIRCLE_WORKFLOW_ID:0:7}" \
             # InstanceType="t2.micro"
+      - save_cache:
+          paths: 
+            - .circleci/files
+          key: terra-dependencies-{{ checksum ".circleci/files" }}
       - persist_to_workspace:
           root: ~/
           paths:
