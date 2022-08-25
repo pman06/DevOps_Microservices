@@ -12,7 +12,7 @@
     - ansible_stdout_callback: yaml
 
   pre_tasks:
-    - name: Wait for system to become reachable
+    - name: "Wait for system to become reachable"
       ansible.builtin.wait_for_connection:
 
     - name: "install python for Ansible."
