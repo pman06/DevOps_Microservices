@@ -15,9 +15,9 @@ executors:
   terraform-cli:
     docker:
       - image: hashicorp/terraform:light
-        environment:
-          TF_VAR_AWS_ACCESS_KEY_ID: $TF_VAR_AWS_ACCESS_KEY_ID
-          TF_VAR_AWS_SECRET_ACCESS_KEY: $TF_VAR_AWS_SECRET_ACCESS_KEY
+    environment:
+      TF_VAR_AWS_ACCESS_KEY_ID: $TF_VAR_AWS_ACCESS_KEY_ID
+      TF_VAR_AWS_SECRET_ACCESS_KEY: $TF_VAR_AWS_SECRET_ACCESS_KEY
 
 
 # commands:
