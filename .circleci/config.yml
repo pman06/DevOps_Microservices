@@ -72,14 +72,14 @@ jobs:
     steps:
       - checkout
       - run:  apk add --update tar gzip
-      - run: pwd
       - terraform/init:
-          path: .
+          path: ~/project/.circleci/files
       - terraform/validate:
           path: .
       - terraform/fmt:
           path: .
       - terraform/plan:
+          var: "ID=ML"
           path: .
       - terraform/apply:
           var: "ID=ML"
