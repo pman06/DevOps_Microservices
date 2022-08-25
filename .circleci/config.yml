@@ -101,7 +101,7 @@ jobs:
           command: |
             cd .circleci/ansible
             ansible-playbook -i inventory.txt configure-server.yml
-
+            
 workflows:
   build-and-test:
     jobs:
