@@ -63,7 +63,7 @@ jobs:
 
   #Deploy infrastructure to test Image on AWS
   deploy-infrastructure:
-    executor: terraform
+    executor: terraform-cli
     steps:
       - checkout
       - run:  apt install -y tar gzip
