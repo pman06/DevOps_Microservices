@@ -13,7 +13,7 @@ provider "aws" {
   secret_key = var.TF_VAR_AWS_SECRET_ACCESS_KEY
 }
 
-resource "aws_security_group" "my_sec_group" {
+resource "aws_default_security_group" "my_sec_group" {
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
     description = "accept ssh rule"
