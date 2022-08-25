@@ -1,10 +1,14 @@
 ---
+- name: add HTTPS apt access 
+  become: true
+  command: apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+
 - name: "Add docker gpg Key"
   become: true
   # apt_key:
   #   url: https://download.docker.com/linux/ubuntu/gpg
   #   state: present
-  command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+  command: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
 - name: "Add Docker registery"
   become: true
