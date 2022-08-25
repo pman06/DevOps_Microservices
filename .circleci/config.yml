@@ -67,14 +67,13 @@ jobs:
 
   #Deploy infrastructure to test Image on AWS
   deploy-infrastructure:
-    working_directory: ~/project/.circleci/files
     executor: terraform/default
+    working_directory: ~/project/.circleci/files
     steps:
       - checkout
       - run:  apk add --update tar gzip
       - run: pwd
       - terraform/init:
-          working_directory: ~/project/.circleci/files
           path: .
       - terraform/validate:
           path: .
