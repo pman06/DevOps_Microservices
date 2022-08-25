@@ -13,7 +13,7 @@ provider "aws" {
   secret_key = var.TF_VAR_AWS_SECRET_ACCESS_KEY
 }
 
-resource "aws_default_security_group" "my_sec_group" {
+resource "aws_security_group" "my_sec_group" {
   ingress {
     cidr_blocks = ["0.0.0.0/0"]
     description = "accept ssh rule"
@@ -29,7 +29,7 @@ resource "aws_default_security_group" "my_sec_group" {
 resource "aws_instance" "TestInstance" {
   ami                         = "ami-052efd3df9dad4825"
   instance_type               = "t2.micro"
-  vpc_security_group_ids      = [aws_default_security_group.my_sec_group.id]
+  vpc_security_group_ids      = [aws_security_group.my_sec_group.id]
   associate_public_ip_address = true
   key_name                    = "eks"
   tags = {
@@ -39,4 +39,3 @@ resource "aws_instance" "TestInstance" {
     command = "echo ${self.public_ip} >> ~/project/.circleci/ansible/inventory.txt"
   }
 }
-
