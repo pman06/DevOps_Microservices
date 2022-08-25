@@ -70,7 +70,8 @@ jobs:
       - run: 
           name: Provision and save node ip to test Docker container
           command: |
-            cd .circleci/files
+            cd .circleci/files 
+            pwd && ls -a
             terraform init
             terraform plan -var="ID=ML"
             terraform apply -var="ID=ML" --auto-approve
