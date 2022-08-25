@@ -74,7 +74,8 @@ jobs:
             env
             terraform init
             terraform plan -var="ID=ML"
-            terraform apply -var="ID=ML" --auto-approve
+            terraform apply -var="ID=ML" -var="TF_VAR_AWS_ACCESS_KEY_ID=${TF_VAR_AWS_ACCESS_KEY_ID}" \
+            --auto-approve
             # To deploy using cloud formation
             # env
             # aws cloudformation deploy --template-file .circleci/files/deploy-ec2.yaml \
