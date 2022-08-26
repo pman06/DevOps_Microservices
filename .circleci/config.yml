@@ -73,8 +73,6 @@ jobs:
       - restore_cache:
           keys:
             - terra-dependencies-{{ checksum ".circleci/files/main.tf" }}
-            # fallback to using the latest cache if no exact match is found
-            - terra-dependencies-
       - run:  apk add --update tar gzip
       - run: pwd
       - terraform/init:
