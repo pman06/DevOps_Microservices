@@ -94,7 +94,7 @@ jobs:
             # --parameter-overrides ID="ML-${CIRCLE_WORKFLOW_ID:0:7}" \
             # InstanceType="t2.micro"
       - run:
-          name: "check inventory is not added yet"
+          name: "Add Inventory"
           command: |
             cd .circleci/files
             terraform output -raw TestInstance-ip >> ~/project/.circleci/ansible/inventory.txt

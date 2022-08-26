@@ -1,6 +1,5 @@
 ---
 - name: "update dependencies"
-  become: true
   apt:
     name: [apt-transport-https, ca-certificates, curl, gnupg, lsb-release]
 
