@@ -4,12 +4,14 @@
     name: ["apt-transport-https", "ca-certificates", "curl", "gnupg", "lsb-release"]
 
 - name: "Add docker gpg Key"
+  become: true
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     file: /usr/share/keyrings/docker-archive-keyring.gpg
     state: present
   
 - name: "Add Docker registery"
+  BECOME: true
   apt_repository:
     repo: deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable
     state: present
