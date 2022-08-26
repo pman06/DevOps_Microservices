@@ -21,6 +21,13 @@ resource "aws_security_group" "my_sec_group" {
     protocol    = "tcp"
     to_port     = 22
   }
+  egress {
+	cidr_blocks = ["0.0.0.0/0"]
+	descriptiom = "Allow all outgoing"
+	from_port 	= 0
+	to_port 	= 0
+	protocol	= "-1" 
+  }
   tags = {
     "Name" = "${var.ID}-Microservice"
   }
