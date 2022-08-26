@@ -1,8 +1,4 @@
 ---
-- name: add HTTPS apt access 
-  apt:
-    name: ["apt-transport-https", "ca-certificates", "curl", "gnupg", "lsb-release"]
-
 - name: "Add docker gpg Key"
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
