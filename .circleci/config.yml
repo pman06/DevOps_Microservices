@@ -97,7 +97,7 @@ jobs:
           name: "check inventory is not added yet"
           command: |
             cd .circleci/files
-            terraform output TestInstance-ip >> ~/project/.circleci/ansible/inventory.txt
+            terraform output -raw TestInstance-ip >> ~/project/.circleci/ansible/inventory.txt
             cat ~/project/.circleci/ansible/inventory.txt
       - save_cache:
           paths: 
@@ -127,7 +127,7 @@ jobs:
           name: Configure instance and install Docker
           command: |
             cd .circleci/ansible
-            ansible-playbook -i inventory.txt --limit 2 configure-server.yml
+            ansible-playbook -i inventory.txt configure-server.yml
 
 workflows:
   build-and-test:
