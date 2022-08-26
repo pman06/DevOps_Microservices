@@ -9,7 +9,7 @@ orbs:
 executors:
   python-node:
     docker:
-      - image: circleci/python:3.9-buster-node-browsers-legacy
+      - image: python:3.7.3-stretch
     
   aws-cli:
     docker:
@@ -109,7 +109,8 @@ jobs:
             - project/.circleci/ansible/inventory.txt
 
   configure-infrastructure:
-    executor: python-node
+    docker:
+      - image: circleci/python:3.9-buster-node-browsers-legacy
     steps:
       - checkout
       - add_ssh_keys:
