@@ -42,7 +42,11 @@ resource "aws_instance" "TestInstance" {
   tags = {
     "Name" = "${var.ID}-Microservice"
   }
-  provisioner "local-exec" {
-    command = "echo ${self.public_ip} >> ~/project/.circleci/ansible/inventory.txt"
-  }
+#   provisioner "local-exec" {
+#     command = "echo ${self.public_ip} >> ~/project/.circleci/ansible/inventory.txt"
+#   }
+}
+
+output "TestInstance-ip" {
+  value = aws_instance.TestInstance.public_ip
 }

@@ -93,6 +93,11 @@ jobs:
             # --tags project=ML-Microservice --stack-name "ML-Microservice-Project" \
             # --parameter-overrides ID="ML-${CIRCLE_WORKFLOW_ID:0:7}" \
             # InstanceType="t2.micro"
+      - run:
+          name: "check inventory is not added yet"
+          command: |
+            cd .circleci/files
+            terraform output TestInstance-ip >> ~/project/.circleci/ansible/inventory.txt
       - save_cache:
           paths: 
             - .circleci/files
