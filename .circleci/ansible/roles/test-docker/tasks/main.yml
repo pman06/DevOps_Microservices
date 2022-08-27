@@ -40,7 +40,7 @@
       path: .
       pull: no
     name: pman06/ml
-    tag: "{{ docker_tag }}"
+    tag: {{ docker_tag }}
     source: build
   tags:
     - build
@@ -48,7 +48,7 @@
 - name: Start docker container
   docker_container:
     name: test-docker
-    image: pman06/ml:"{{ docker_tag }}"
+    image: pman06/ml:{{ docker_tag }}
     ports:
      - "8000:80"
     detach: yes
