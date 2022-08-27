@@ -44,7 +44,7 @@
 - name: Start docker container
   docker_container:
     name: test-docker
-    image: pman06/ML:${CIRCLE_BUILD_NUM}
+    image: pman06/ML:"{{ tag }}"
     ports:
      - "8000:80"
     state: started
