@@ -66,7 +66,9 @@
   command: chmod 744 make_prediction.sh
 
 - name: testing
-  shell: result=$(./make_prediction.sh) && echo $result | grep "prediction"
+  shell: |
+      /make_prediction.sh
+      echo $? | grep "1"
   tags:
     - testing
 
