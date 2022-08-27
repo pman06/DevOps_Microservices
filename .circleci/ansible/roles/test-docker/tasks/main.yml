@@ -61,7 +61,7 @@
   command: 
     cmd: |
       chmod +x ./make_prediction.sh
-      if ./make_prediction.sh | grep "prediction"
+      if  /make_prediction.sh | grep "prediction"
       then
         exit 0
       else
@@ -69,7 +69,8 @@
       fi
   tags:
     test
-  # - name: remove container
-  #   docker_container:
-  #     name: test-docker
-  #     state: absent
+    
+- name: remove container
+  docker_container:
+    name: test-docker
+    state: absent
