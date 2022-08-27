@@ -17,7 +17,7 @@
     src: "{{ item }}"
     dest: ./model_data/
   with_fileglob:
-    - "~/model_data/*"
+    - "/root/project/model_data/*"
   tags:
     - model-data
 
@@ -26,12 +26,10 @@
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
   with_items: 
-    - { src: "~/Dockerfile", dest: "./Dockerfile" }
-    - { src: "~/.dockerignore", dest: "./.dockerignore" }
-    - { src: "~/make_prediction.sh", dest: "./make_prediction.sh" }
-    - { src: "~/app.py", dest: "./app.py" }
-    - { src: "~/app.py", dest: "./app.py" }
-    - { src: "~/app.py", dest: "./app.py" }
+    - { src: "~/project/Dockerfile", dest: "./Dockerfile" }
+    - { src: "~/project/.dockerignore", dest: "./.dockerignore" }
+    - { src: "~/project/make_prediction.sh", dest: "./make_prediction.sh" }
+    - { src: "~/project/app.py", dest: "./app.py" }
   tags:
     - others
     
@@ -48,7 +46,7 @@
     name: test-docker
     image: pman06/ML:${CIRCLE_BUILD_NUM}
     ports:
-     - "8080:80"
+     - "8000:80"
     state: started
 
 - name: test
@@ -56,7 +54,7 @@
     cmd: |
       result=(curl -d '{"CHAS":{"0":0},"RM":{"0":6.575},"TAX":{"0":296.0},"PTRATIO":{"0":15.3},"B":{"0":396.9},"LSTAT":{"0":4.98}}' \
       -H "Content-Type: application/json" \ 
-      -X POST http://localhost:$PORT/predict)
+      -X POST http://localhost:8000/predict)
       if echo $result | grep "prediction"
       then
         exit 0
