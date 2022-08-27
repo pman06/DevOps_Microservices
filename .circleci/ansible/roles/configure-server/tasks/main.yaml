@@ -1,7 +1,7 @@
 ---
 - name: "update dependencies"
   apt:
-    name: [apt-transport-https, ca-certificates, curl, gnupg, lsb-release, pip]
+    name: [apt-transport-https, ca-certificates, curl, gnupg, lsb-release, python3-pip]
 
 - name: "Add docker gpg Key"
   apt_key:
