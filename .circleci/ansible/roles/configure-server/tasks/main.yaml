@@ -24,7 +24,10 @@
   apt: 
     name: [docker-ce-cli, containerd.io]
     state: latest
-
+- name: Install Docker Module for Python
+  pip:
+    name: docker
+    
 # - name: "Start Docker service"
 #   command: sudo usermod -aG docker $USER && newgrp docker
 #   systemd: 
