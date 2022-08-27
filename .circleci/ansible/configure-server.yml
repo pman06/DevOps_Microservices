@@ -12,7 +12,7 @@
     - ansible_python_interpreter: /usr/bin/python3
     - ansible_host_key_checking: false
     - ansible_stdout_callback: yaml
-    - tag: "{{ lookup('env', 'CIRCLE_BUILD_NUM')}}"
+ 
     
 
   pre_tasks:

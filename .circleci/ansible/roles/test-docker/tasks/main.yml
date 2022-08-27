@@ -34,6 +34,7 @@
     - others
     
 - name: Build image 
+  become: true
   docker_image:
     build:
       path: .
@@ -42,6 +43,7 @@
     source: build
 
 - name: Start docker container
+  become: true
   docker_container:
     name: test-docker
     image: pman06/ML:"{{ tag }}"
