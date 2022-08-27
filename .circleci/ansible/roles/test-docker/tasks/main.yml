@@ -57,19 +57,12 @@
   tags:
     - start
 
-- name: test
-  command: 
-    cmd: |
-      chmod +x ./make_prediction.sh
-      if  /make_prediction.sh | grep "prediction"
-      then
-        exit 0
-      else
-        exit 1
-      fi
+- name: testing
+  become: true
+  command: ./make_prediction.sh | grep "prediction"
   tags:
-    test
-    
+    - testing
+
 - name: remove container
   docker_container:
     name: test-docker
