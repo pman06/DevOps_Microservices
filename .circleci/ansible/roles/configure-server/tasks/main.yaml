@@ -1,7 +1,7 @@
 ---
 - name: "update dependencies"
   apt:
-    name: [apt-transport-https, ca-certificates, curl, gnupg, lsb-release, python3-pip]
+    name: [apt-transport-https, ca-certificates, curl, gnupg, lsb-release]
 
 - name: "Add docker gpg Key"
   apt_key:
@@ -16,7 +16,7 @@
 
 - name: Update apt and install docker-ce
   apt:
-    name: docker-ce
+    name: [docker-ce, python3-pip]
     state: latest
     update_cache: true
 
