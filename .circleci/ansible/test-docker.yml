@@ -11,7 +11,7 @@
     - ansible_host_key_checking: false
     - ansible_stdout_callback: yaml
     - docker_tag: "{{ lookup('env', 'CIRCLE_BUILD_NUM')}}"
-    - ansible_ssh_private_key_file: ~/eks.pem
+    
 
   pre_tasks:
     # - name: Wait 300 seconds, but only start checking after 60 seconds
