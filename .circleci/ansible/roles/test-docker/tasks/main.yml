@@ -67,10 +67,7 @@
 
 - name: testing
   become: true
-  command: 
-    cmd: |
-      result=$(./make_prediction.sh)
-      echo $result | grep "prediction"
+  command: result=$(./make_prediction.sh) && echo $result | grep "prediction"
   tags:
     - testing
 
