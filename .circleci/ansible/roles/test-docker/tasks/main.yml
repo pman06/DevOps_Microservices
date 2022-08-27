@@ -3,7 +3,7 @@
   become: true
   become_method: sudo
   become_user: root 
-  command: chmod 777 /var/run/docker.sock 
+  command: chmod 744 /var/run/docker.sock 
   # ansible.builtin.file:
   #   path: /var/run/docker.sock
   #   mode: '0644'
@@ -63,11 +63,10 @@
   become: true
   become_method: sudo
   become_user: root 
-  command: chmod 777 make_prediction.sh
+  command: chmod 744 make_prediction.sh
 
 - name: testing
-  become: true
-  command: result=$(./make_prediction.sh) && echo $result | grep "prediction"
+  shell: result=$(./make_prediction.sh) && echo $result | grep "prediction"
   tags:
     - testing
 
