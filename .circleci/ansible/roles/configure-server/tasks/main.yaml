@@ -1,7 +1,7 @@
 ---
 - name: "update dependencies"
   apt:
-    name: [apt-transport-https, ca-certificates, curl, gnupg, lsb-release]
+    name: [apt-transport-https, ca-certificates, curl, gnupg, lsb-release, pip]
 
 - name: "Add docker gpg Key"
   apt_key:
@@ -27,7 +27,7 @@
 - name: Install Docker Module for Python
   pip:
     name: docker
-    
+
 # - name: "Start Docker service"
 #   command: sudo usermod -aG docker $USER && newgrp docker
 #   systemd: 
