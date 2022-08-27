@@ -38,7 +38,7 @@
     build:
       path: .
     name: pman06/ML
-    tag: ${CIRCLE_BUILD_NUM}
+    tag: "{{ tag }}"
     source: build
 
 - name: Start docker container
