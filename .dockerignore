@@ -1,0 +1,9 @@
+***/.circleci/*
+output_txt_files
+.dockerignore
+README.md
+upload_docker.sh
+run_kubernetes.sh
+run_docker.sh
+hadolint
+make_prediction.sh

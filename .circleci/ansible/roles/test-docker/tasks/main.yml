@@ -1,0 +1,70 @@
+---
+- name: Add Docker Permissions
+  become: true
+  user: 
+    name: ubuntu
+    groups: docker
+    append: yes
+
+- name: Start Docker service
+  systemd: 
+    name: docker
+    enabled: yes
+    state: restarted 
+
+- name: copy source files to server
+  copy:
+    src: "{{ item }}"
+    dest: ./model_data/
+  with_fileglob:
+    - "~/model_data/*"
+  tags:
+    - model-data
+
+- name: copy other files
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items: 
+    - { src: "~/Dockerfile", dest: "./Dockerfile" }
+    - { src: "~/.dockerignore", dest: "./.dockerignore" }
+    - { src: "~/make_prediction.sh", dest: "./make_prediction.sh" }
+    - { src: "~/app.py", dest: "./app.py" }
+    - { src: "~/app.py", dest: "./app.py" }
+    - { src: "~/app.py", dest: "./app.py" }
+  tags:
+    - others
+    
+- name: Build image 
+  docker_image:
+    build:
+      path: .
+    name: pman06/ML
+    tag: ${CIRCLE_BUILD_NUM}
+    source: build
+
+- name: Start docker container
+  docker_container:
+    name: test-docker
+    image: pman06/ML:${CIRCLE_BUILD_NUM}
+    ports:
+     - "8080:80"
+    state: started
+
+- name: test
+  command: 
+    cmd: |
+      result=(curl -d '{"CHAS":{"0":0},"RM":{"0":6.575},"TAX":{"0":296.0},"PTRATIO":{"0":15.3},"B":{"0":396.9},"LSTAT":{"0":4.98}}' \
+      -H "Content-Type: application/json" \ 
+      -X POST http://localhost:$PORT/predict)
+      if echo $result | grep "prediction"
+      then
+        exit 0
+      else
+        exit 1
+      fi
+  
+  # - name: remove container
+  #   docker_container:
+  #     name: test-docker
+  #     state: absent
