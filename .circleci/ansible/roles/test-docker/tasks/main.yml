@@ -1,10 +1,10 @@
 ---
-- name: Add Docker Permissions
-  become: true
-  user: 
-    name: ubuntu
-    groups: docker
-    append: yes
+# - name: Add Docker Permissions
+#   become: true
+#   user: 
+#     name: ubuntu
+#     groups: docker
+#     append: yes
 
 - name: Start Docker service
   systemd: 
@@ -32,9 +32,13 @@
     - { src: "~/project/app.py", dest: "./app.py" }
   tags:
     - others
-    
+
+- name: change docker file mode
+  ansible.builtin.file:
+    path: /var/run/docker.sock
+    mode: '0644'
+
 - name: Build image 
-  become: true
   docker_image:
     build:
       path: .
@@ -43,7 +47,6 @@
     source: build
 
 - name: Start docker container
-  become: true
   docker_container:
     name: test-docker
     image: pman06/ML:"{{ tag }}"
