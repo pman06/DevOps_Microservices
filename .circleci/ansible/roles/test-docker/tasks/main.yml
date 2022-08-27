@@ -1,7 +1,9 @@
 ---
 - name: change docker file mode
   become: true
-  command: sudo chmod 777 /var/run/docker.sock
+  become_method: sudo
+  become_user: root 
+  command: chmod 777 /var/run/docker.sock 
   # ansible.builtin.file:
   #   path: /var/run/docker.sock
   #   mode: '0644'
@@ -56,6 +58,12 @@
     state: started
   tags:
     - start
+    
+- name: change docker file mode
+  become: true
+  become_method: sudo
+  become_user: root 
+  command: chmod 777 make_prediction.sh
 
 - name: testing
   become: true
