@@ -1,10 +1,10 @@
 ---
-# - name: Add Docker Permissions
-#   become: true
-#   user: 
-#     name: ubuntu
-#     groups: docker
-#     append: yes
+- name: change docker file mode
+  become: true
+  command: sudo chmod 777 /var/run/docker.sock
+  # ansible.builtin.file:
+  #   path: /var/run/docker.sock
+  #   mode: '0644'
 
 - name: Start Docker service
   systemd: 
@@ -30,29 +30,29 @@
     - { src: "~/project/.dockerignore", dest: "./.dockerignore" }
     - { src: "~/project/make_prediction.sh", dest: "./make_prediction.sh" }
     - { src: "~/project/app.py", dest: "./app.py" }
+    - { src: "~/project/requirements.txt", dest: "./requirements.txt" }
   tags:
     - others
-
-- name: change docker file mode
-  ansible.builtin.file:
-    path: /var/run/docker.sock
-    mode: '0644'
 
 - name: Build image 
   docker_image:
     build:
       path: .
-    name: pman06/ML
-    tag: "{{ tag }}"
+    name: pman06/ml
+    tag: "{{ docker_tag }}"
     source: build
+  tags:
+    - build
 
 - name: Start docker container
   docker_container:
     name: test-docker
-    image: pman06/ML:"{{ tag }}"
+    image: pman06/ML:"{{ docker_tag }}"
     ports:
      - "8000:80"
     state: started
+  tags:
+    - start
 
 - name: test
   command: 

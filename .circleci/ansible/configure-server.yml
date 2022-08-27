@@ -6,14 +6,11 @@
   become_method: sudo
   become_user: root  
   gather_facts: false
-  # environment:
-  #   - tag: "{{ lookup('env', 'CIRCLE_BUILD_NUM')}}"
   vars:
     - ansible_python_interpreter: /usr/bin/python3
     - ansible_host_key_checking: false
     - ansible_stdout_callback: yaml
- 
-    
+
 
   pre_tasks:
     # - name: Wait 300 seconds, but only start checking after 60 seconds
