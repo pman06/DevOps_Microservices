@@ -31,6 +31,7 @@
     - { src: "~/project/make_prediction.sh", dest: "./make_prediction.sh" }
     - { src: "~/project/app.py", dest: "./app.py" }
     - { src: "~/project/requirements.txt", dest: "./requirements.txt" }
+    - { src: "~/project/make_prediction.sh", dest: "./make_prediction.sh" }
   tags:
     - others
 
@@ -40,7 +41,7 @@
       path: .
       pull: no
     name: pman06/ml
-    tag: {{ docker_tag }}
+    tag: "{{ docker_tag }}"
     source: build
   tags:
     - build
@@ -59,16 +60,15 @@
 - name: test
   command: 
     cmd: |
-      result=(curl -d '{"CHAS":{"0":0},"RM":{"0":6.575},"TAX":{"0":296.0},"PTRATIO":{"0":15.3},"B":{"0":396.9},"LSTAT":{"0":4.98}}' \
-      -H "Content-Type: application/json" \ 
-      -X POST http://localhost:8000/predict)
-      if echo $result | grep "prediction"
+      chmod +x ./make_prediction.sh
+      if ./make_prediction.sh | grep "prediction"
       then
         exit 0
       else
         exit 1
       fi
-  
+  tags:
+    test
   # - name: remove container
   #   docker_container:
   #     name: test-docker
